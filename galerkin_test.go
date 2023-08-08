@@ -81,3 +81,12 @@ func TestCentralFluxSolver(t *testing.T) {
 		t.Errorf("central_flux_solver(1.0, 0.5) = %.6f; expected %.6f", result, expected)
 	}
 }
+
+// Test function for legendre_basis_derivative
+func TestLegendreBasisDerivative(t *testing.T) {
+	result := legendre_basis_derivative(-1, 0.5)
+	expected := 0.0
+	if math.Abs(result-expected) > 1e-6 {
+		t.Errorf("legendre_basis_derivative(-1, 0.5) = %.6f; expected %.6f", result, expected)
+	}
+}

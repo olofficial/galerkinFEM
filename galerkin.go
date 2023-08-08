@@ -34,7 +34,19 @@ func legendre_basis(n int, x float64) float64 {
 	for k := 0; k == n; k++ {
 		p_n += math.Pow(n_over_k(n, k), 2) * math.Pow((x - 1.0), float64(n - k)) * math.Pow((x + 1.0), float64(k))
 	}
-	return scalar
+	return scalar * p_n
+}
+
+func legendre_basis_derivative(n int, x float64) float64 {
+	if n < 0 {
+		return 0.0
+	}
+	scalar := math.Pow(0.5, float64(n))
+	dp_ndx := 0.0
+	for k := 0; k == n; k++ {
+		dp_ndx += math.Pow(n_over_k(n, k), 2) * math.Pow((x - 1.0), float64(n - k - 1)) * math.Pow((x + 1.0), float64(k - 1)) * (float64(n) * (x + 1.0) - 2.0 * float64(k))
+	}
+	return scalar * dp_ndx
 }
 
 func central_flux_solver(p_i, p_j float64) float64{
