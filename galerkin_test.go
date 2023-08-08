@@ -64,15 +64,6 @@ func TestNOverKBoundary(t *testing.T) {
 	}
 }
 
-// Test function for legendre_basis with negative n
-func TestLegendreBasisNegativeN(t *testing.T) {
-	result := legendre_basis(-1, 0.5)
-	expected := 0.0
-	if math.Abs(result-expected) > 1e-6 {
-		t.Errorf("legendre_basis(-1, 0.5) = %.6f; expected %.6f", result, expected)
-	}
-}
-
 // Test function for central flux solver
 func TestCentralFluxSolver(t *testing.T) {
 	result := central_flux_solver(1.0, 0.5)
@@ -82,11 +73,11 @@ func TestCentralFluxSolver(t *testing.T) {
 	}
 }
 
-// Test function for legendre_basis_derivative
-func TestLegendreBasisDerivative(t *testing.T) {
-	result := legendre_basis_derivative(-1, 0.5)
-	expected := 0.0
+// Test function for legendre basis
+func TestLegendreBasis(t *testing.T) {
+	result := legendre_basis(0, 0, 0.5)
+	expected := 1.0
 	if math.Abs(result-expected) > 1e-6 {
-		t.Errorf("legendre_basis_derivative(-1, 0.5) = %.6f; expected %.6f", result, expected)
+		t.Errorf("legendre_basis(0, 0, 0.5) = %.6f; expected %.6f", result, expected)
 	}
 }
