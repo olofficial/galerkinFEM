@@ -8,16 +8,27 @@ import (
 	"gonum.org/v1/gonum/mat"
 )
 
+// BinomialCoefficient calculates the binomial coefficient of two integers.
+//
+// Parameters:
+// - n: an integer representing the total number of items.
+// - k: an integer representing the number of items to be chosen.
+//
+// Return type: float64
 func BinomialCoefficient(n, k int) float64 {
 	if k == 0 && n == 0 {
-		return 1
+		return 1.0
 	}
 	if 0 <= k && k < n {
 		return float64(Factorial(n)) / (float64(Factorial(k)) * float64(Factorial(n-k)))
 	}
-	return 0
+	return 0.0
 }
 
+// Factorial calculates the factorial of a given integer.
+//
+// The parameter n is the integer for which the factorial is calculated.
+// The function returns an integer value which is the factorial of the input.
 func Factorial(n int) int {
 	if n == 0 {
 		return 1
@@ -25,6 +36,15 @@ func Factorial(n int) int {
 	return n * Factorial(n-1)
 }
 
+// LegendreBasis calculates the Legendre basis function for a given order and derivative order.
+//
+// Parameters:
+// - n: the order of the basis function (must be non-negative)
+// - derivativeOrder: the order of the derivative (must be between 0 and 2)
+// - x: the input value
+//
+// Returns:
+// - float64: the value of the Legendre basis function
 func LegendreBasis(n, derivativeOrder int, x float64) float64 {
 	if n < 0 || derivativeOrder < 0 || derivativeOrder > 2 {
 		return 0.0
@@ -52,21 +72,51 @@ func LegendreBasis(n, derivativeOrder int, x float64) float64 {
 	return scalar * pN
 }
 
+// legendreBasisRegular calculates the Legendre basis function for regular polynomials.
+//
+// Parameters:
+//   n - the degree of the polynomial
+//   k - the index of the basis function
+//   x - the input value
+//
+// Returns:
+//   float64 - the value of the Legendre basis function
 func legendreBasisRegular(n, k int, x float64) float64 {
 	return math.Pow(x-1.0, float64(n-k)) * math.Pow(x+1.0, float64(k))
 }
 
+// legendreBasisDerivative calculates the derivative of the Legendre basis function.
+//
+// Parameters:
+// - n: an integer representing the order of the Legendre basis function.
+// - k: an integer representing the index of the Legendre basis function.
+// - x: a float64 representing the input value.
+//
+// Return:
+// - a float64 representing the value of the derivative of the Legendre basis function.
 func legendreBasisDerivative(n, k int, x float64) float64 {
 	return BinomialCoefficient(n, k) * BinomialCoefficient(n, k) *
 		math.Pow(x-1.0, float64(n-k-1)) * math.Pow(x+1.0, float64(k-1)) *
 		(float64(n)*(x+1.0) - 2.0*float64(k))
 }
 
+// legendreBasisSecondDerivative calculates the second derivative of the Legendre basis function.
+//
+// Parameters:
+// - n: an integer representing the degree of the basis function
+// - k: an integer representing the order of the basis function
+// - x: a float64 representing the input value
+//
+// Return type: float64
 func legendreBasisSecondDerivative(n, k int, x float64) float64 {
-	return math.Pow(x-1, float64(n-k-2)) * math.Pow(x+1, float64(k-2)) *
-		((math.Pow(float64(n), 2)-float64(n))*math.Pow(x, 2) +
-			(2*math.Pow(float64(n), 2)-float64(4*k+2)*float64(n)+4*float64(k))*x +
-			math.Pow(float64(n), 2)-float64(4*k+1)*float64(n)+4*math.Pow(float64(k), 2))
+	floatN := float64(n)
+	floatK := float64(k)
+
+	term1 := math.Pow(x-1, floatN-floatK-2) * math.Pow(x+1, floatK-2)
+	term2 := (floatN*floatN - floatN) * x * x
+	term3 := (2*floatN*floatN - (4.0*floatK+2.0)*floatN + 4*floatK) * x
+	term4 := floatN*floatN - (4.0*floatK+1.0)*floatN + 4*math.Pow(floatK, 2)
+	return term1 * (term2 + term3 + term4)
 }
 
 // StiffnessMatrix calculates the stiffness matrix for a given range of x values, number of nodes, and state vector.
